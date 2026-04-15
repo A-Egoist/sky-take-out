@@ -56,4 +56,9 @@ public interface DishMapper {
      */
     @AutoFill(value = OperationType.UPDATE)
     void update(Dish dish);
+
+    /**
+     * 根据分类 id 查询在售菜品
+     */
+    List<Dish> list(Dish dish);
 }
