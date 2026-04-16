@@ -6,9 +6,12 @@ import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.exception.DeletionNotAllowedException;
+import com.sky.exception.SetmealEnableFailedException;
+import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
@@ -28,6 +31,8 @@ public class SetmealServiceImpl implements SetmealService {
     private SetmealMapper setmealMapper;
     @Autowired
     private SetmealDishMapper setmealDishMapper;
+    @Autowired
+    private DishMapper dishMapper;
 
     /**
      * 新增套餐
@@ -121,5 +126,26 @@ public class SetmealServiceImpl implements SetmealService {
         });
         // 向 setmeal_dish 表中插入 n 条套餐和菜品的关系数据
         setmealDishMapper.insertBatch(setmealDishes);
+    }
+
+    /**
+     * 套餐启售或停售
+     */
+    public void EnableOrDisable(Long id, Integer status) {
+        // 启售套餐
+        if (status == StatusConstant.ENABLE) {
+            // 先判断套餐中的菜品是否存在停售的菜品
+            List<Dish> dishes = dishMapper.getDishBySetmealId(id);
+            dishes.forEach(dish -> {
+                // 如果存在停售的菜品，抛出启售失败异常
+                if (dish.getStatus() == StatusConstant.DISABLE) {
+                    throw new SetmealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);
+                }
+            });
+        }
+
+        // 停售套餐、启售套餐（套餐中没有停售菜品）
+        Setmeal setmeal = Setmeal.builder().id(id).status(status).build();
+        setmealMapper.update(setmeal);
     }
 }
