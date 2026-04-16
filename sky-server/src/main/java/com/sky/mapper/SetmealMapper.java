@@ -43,4 +43,10 @@ public interface SetmealMapper {
      * 根据 id 批量删除套餐
      */
     void deleteByIds(List<Long> ids);
+
+    /**
+     * 更新套餐数据
+     */
+    @AutoFill(value = OperationType.UPDATE)
+    void update(Setmeal setmeal);
 }
