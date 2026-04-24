@@ -87,6 +87,7 @@ public class SetmealController {
      * 套餐启售或停售
      */
     @PostMapping("/status/{status}")
+    @ApiOperation(value = "套餐启售或停售")
     public Result EnableOrDisable(@PathVariable Integer status, @RequestParam Long id) {
         log.info("套餐启售或停售：{}", status);
         setmealService.EnableOrDisable(id, status);
