@@ -44,4 +44,9 @@ public interface DishService {
      * 条件查询菜品
      */
     List<DishVO> listWithFlavor(Dish dish);
+
+    /**
+     * 菜品启售或停售
+     */
+    void EnableOrDisable(Integer status, Long id);
 }
