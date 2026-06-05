@@ -26,4 +26,10 @@ public interface OrderMapper {
      * 分页条件查询，并按照下单时间排序
      */
     Page<Orders> pageQuery(OrdersPageQueryDTO ordersPageQueryDTO);
+
+    /**
+     * 根据订单 id 查询订单
+     */
+    @Select("select * from orders where id = #{id}")
+    Orders getById(Long id);
 }
