@@ -95,9 +95,20 @@ public class OrderController {
      */
     @PutMapping("/delivery/{id}")
     @ApiOperation(value = "派送订单")
-    public Result delivery(@PathVariable Long id) throws Exception {
+    public Result delivery(@PathVariable Long id) {
         log.info("派送订单：{}", id);
         orderService.delivery(id);
+        return Result.success();
+    }
+
+    /**
+     * 完成订单
+     */
+    @PutMapping("/complete/{id}")
+    @ApiOperation(value = "完成订单")
+    public Result complete(@PathVariable Long id) {
+        log.info("完成订单");
+        orderService.complete(id);
         return Result.success();
     }
 }
