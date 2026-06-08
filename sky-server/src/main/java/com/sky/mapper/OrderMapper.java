@@ -53,4 +53,9 @@ public interface OrderMapper {
      * 根据 map 中的 begin、end、status 等条件统计营业额
      */
     Double sumTurnover(Map map);
+
+    /**
+     * 根据 map 中的 begin、end、status 等条件统计订单数据
+     */
+    Integer countByMap(Map map);
 }
